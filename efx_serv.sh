@@ -2,6 +2,7 @@
 
 export EFINITY_HOME=$HOME/hdd/shreeyash/efinity/2023.1/
 export EFXPT_HOME=$EFINITY_HOME/pt
+export EFXPGM_HOME=$EFINITY_HOME/pgm
 export PYTHON_PATH=$EFINITY_HOME/bin
 export PATH=$PYTHON_PATH:$EFINITY_HOME/scripts:$PATH
 
@@ -11,7 +12,11 @@ OPTION_FULL_EXPORT=0
 MY_NAME="$(basename $0)"
 PATH_TO_SCRIPTS=$EFINITY_HOME/scripts
 
-# TODO: add option parsing
+if [ $# < 1 ]; then
+    echo "$MY_NAME: Too few arguments"
+    echo "USAGE: $MY_NAME <project_name>"
+    echo "NOTE: do not give .xml extension to project name"
+fi
 
 if [ ! -d /tmp/"$TARGET_DIR" ]; then
 	mkdir /tmp/"$TARGET_DIR"
