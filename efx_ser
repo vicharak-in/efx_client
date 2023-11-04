@@ -32,6 +32,7 @@ export PATH=${PYTHON_PATH}:$(echo $PATH)
 export EFXPT_HOME="${EFINITY_HOME}/pt"
 export EFXPGM_HOME="${EFINITY_HOME}/pgm"
 
+echo "Running Synthesis"
 ${EFINITY_HOME}/scripts/efx_run.py ${PROJECT_NAME}.xml
 # ${EFINITY_HOME}/scripts/efx_run.py -f pgm ${PROJECT_NAME}.xml
 

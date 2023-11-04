@@ -38,8 +38,10 @@ fi
 
 scp vicharak@$SERVER_IP:"$SERVER_PROJECT_FOLDER/$PROJECT_NAME/outflow.zip" .
 
-unzip -d "$PROJECT_FOLDER" outflow.zip
+unzip -o outflow.zip -d "$PROJECT_FOLDER" 
 
 ssh vicharak@$SERVER_IP "rm -r $SERVER_PROJECT_FOLDER/$PROJECT_NAME"
 
 rm outflow.zip
+
+cat "$PROJECT_FOLDER/outflow/$PROJECT_NAME.pnr.rpt"
