@@ -1,0 +1,60 @@
+#!/bin/env python3
+import xml.etree.ElementTree as ET
+import os
+import shutil
+import argparse
+from zipfile import ZipFile
+
+# take arguments from the command line
+parser = argparse.ArgumentParser()
+parser.add_argument("top_file_xml", help="top file xml")
+args = parser.parse_args()
+
+# if not given print usage
+if not args.top_file_xml:
+    print("Usage: ./parser <top_file_xml>")
+    exit()
+
+top_file_xml = args.top_file_xml
+
+directory = os.path.dirname(os.path.realpath(top_file_xml))
+
+f = open(top_file_xml, "r")
+d = f.read()
+myroot = ET.fromstring(d)
+
+if not os.path.exists("server_files"):
+    os.mkdir("server_files")
+lst = []
+for x in myroot[1]:
+    c = x.attrib
+    split_tup = os.path.splitext(c["name"])
+
+    if split_tup[1]:
+        lst.append(directory + "/" + c["name"])
+
+for x in myroot[9]:
+    c = x.attrib
+    split_tup = os.path.splitext(c["name"])
+
+    if c["name"] == "auto_instantiation" and c["value"] == "on":
+         lst.append(directory + "/debug_profile.wizard.json")
+
+for x in lst:
+    shutil.copy2(x, 'server_files/')
+
+shutil.copy2(top_file_xml, 'server_files/')
+
+peri_xml_path = top_file_xml[:-3] + "peri.xml"
+if os.path.exists(peri_xml_path):
+    shutil.copy2(peri_xml_path, 'server_files/')
+
+if os.path.exists(directory + "/ip"):
+    shutil.copytree(directory + "/ip", "server_files/ip")
+
+zip_file_name = os.path.basename(top_file_xml[:-4])
+archived = shutil.make_archive(zip_file_name, 'zip', 'server_files/')
+
+print(zip_file_name + ".zip")
+
+shutil.rmtree("server_files")

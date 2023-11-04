@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+# HOME="/home/dj"
+EFINITY_HOME="${HOME}/hdd/shreeyash/efinity/2023.1"
+BASE_FOLDER="${HOME}/hdd/efinity_company_projects"
+
+cd $BASE_FOLDER || exit
+
+ZIP_FILE="$1"
+PROJECT_FOLDER=$(basename -s ".zip" ${ZIP_FILE})
+
+mkdir ${PROJECT_FOLDER}
+cd ${PROJECT_FOLDER}
+
+CURRENT_PATH=$(pwd)
+
+unzip ${ZIP_FILE}
+if [ $? -ne 0 ]; then
+	echo "Unzip failed"
+	exit 1
+fi
+
+rm ${ZIP_FILE}
+
+PROJECT_NAME="$2"
+PYTHON_PATH="${EFINITY_HOME}/bin"
+
+sed -i "s|location=\"[^\"]*\"|location=\"${CURRENT_PATH}\"|" ${PROJECT_NAME}.xml
+
+export EFINITY_HOME="${EFINITY_HOME}"
+export PATH=${PYTHON_PATH}:$(echo $PATH)
+export EFXPT_HOME="${EFINITY_HOME}/pt"
+export EFXPGM_HOME="${EFINITY_HOME}/pgm"
+
+${EFINITY_HOME}/scripts/efx_run.py ${PROJECT_NAME}.xml
+# ${EFINITY_HOME}/scripts/efx_run.py -f pgm ${PROJECT_NAME}.xml
+
+zip -r outflow.zip outflow
