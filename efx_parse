@@ -35,6 +35,13 @@ for x in myroot[1]:
     if split_tup[1]:
         lst.append(directory + "/" + c["name"])
 
+for x in myroot[2]:
+    c = x.attrib
+    split_tup = os.path.splitext(c["name"])
+
+    if split_tup[1]:
+        lst.append(directory + "/" + c["name"])
+
 for x in myroot[9]:
     c = x.attrib
     split_tup = os.path.splitext(c["name"])
