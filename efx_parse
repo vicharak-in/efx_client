@@ -25,7 +25,9 @@ myroot = ET.fromstring(d)
 
 if not os.path.exists("server_files"):
     os.mkdir("server_files")
+
 lst = []
+
 for x in myroot[1]:
     c = x.attrib
     split_tup = os.path.splitext(c["name"])
@@ -41,7 +43,11 @@ for x in myroot[9]:
          lst.append(directory + "/debug_profile.wizard.json")
 
 for x in lst:
-    shutil.copy2(x, 'server_files/')
+    if os.path.basename(x) == x[len(directory):len(x)]:
+        shutil.copy2(x, 'server_files/')
+    else:
+        os.makedirs("server_files/" + os.path.dirname(x)[len(directory):], exist_ok=True)
+        shutil.copy2(x, 'server_files/' + os.path.dirname(x)[len(directory):])
 
 shutil.copy2(top_file_xml, 'server_files/')
 
