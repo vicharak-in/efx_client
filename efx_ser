@@ -37,3 +37,11 @@ ${EFINITY_HOME}/scripts/efx_run.py ${PROJECT_NAME}.xml
 # ${EFINITY_HOME}/scripts/efx_run.py -f pgm ${PROJECT_NAME}.xml
 
 zip -r outflow.zip outflow
+
+# Print a brief summary before sending the files
+
+awk '/Resource Summary \(begin\)/{p=1} { if (p == 1) { print $0 }} /Resource Summary \(end\)/{p=0}' outflow/kernel_first.place.rpt
+
+awk '/Clock Frequency Summary \(begin\)/{p=1} { if (p == 1) { print $0 }} /Clock Frequency Summary \(end\)/{p=0}' outflow/kernel_first.timing.rpt
+
+awk '/Clock Relationship Summary \(begin\)/{q=1} { if (q == 1) { print $0 }} /Clock Relationship Summary \(end\)/{q=0}'  outflow/kernel_first.timing.rpt
