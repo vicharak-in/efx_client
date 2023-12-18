@@ -14,7 +14,7 @@ SERVER_PROJECT_FOLDER="/home/vicharak/hdd/efinity_company_projects"
 ssh-keygen -F $SERVER_IP > /dev/null
 ID_ALREADY_PRESENT=$?
 
-if [ $ID_ALREADY_PRESENT ]; then
+if [[ $ID_ALREADY_PRESENT -ne 0 ]]; then
 	ssh-copy-id vicharak@$SERVER_IP
 fi
 
