@@ -59,6 +59,9 @@ for x in myroot[9]:
     if c["name"] == "auto_instantiation" and c["value"] == "on":
          lst.append(directory + "/debug_profile.wizard.json")
 
+         if os.path.exists(directory + "/work_dbg/debug_top.v"):
+             lst.append(directory + "/work_dbg/debug_top.v")
+
 # after taking the files copy to created folder
 for x in lst:
     if os.path.basename(x) == x[len(directory):len(x)]:
