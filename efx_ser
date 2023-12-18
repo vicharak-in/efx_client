@@ -36,7 +36,7 @@ echo "Running Synthesis"
 ${EFINITY_HOME}/scripts/efx_run.py ${PROJECT_NAME}.xml
 # ${EFINITY_HOME}/scripts/efx_run.py -f pgm ${PROJECT_NAME}.xml
 
-zip -r outflow.zip outflow
+zip -r -9 outflow.zip outflow
 
 # Print a brief summary before sending the files
 
