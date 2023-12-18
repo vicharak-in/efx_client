@@ -15,19 +15,27 @@ if not args.top_file_xml:
     print("Usage: ./parser <top_file_xml>")
     exit()
 
+# get top file from args
 top_file_xml = args.top_file_xml
 
+# get the name of the directory
 directory = os.path.dirname(os.path.realpath(top_file_xml))
 
+# open file
 f = open(top_file_xml, "r")
 d = f.read()
+
+# parse that file
 myroot = ET.fromstring(d)
 
+# server_files folder will be created if not there
 if not os.path.exists("server_files"):
     os.mkdir("server_files")
 
+# create list of files by parsing xml
 lst = []
 
+# get verilog files from the xml
 for x in myroot[1]:
     c = x.attrib
     split_tup = os.path.splitext(c["name"])
@@ -35,6 +43,7 @@ for x in myroot[1]:
     if split_tup[1]:
         lst.append(directory + "/" + c["name"])
 
+# get sdc files from the xml
 for x in myroot[2]:
     c = x.attrib
     split_tup = os.path.splitext(c["name"])
@@ -42,6 +51,7 @@ for x in myroot[2]:
     if split_tup[1]:
         lst.append(directory + "/" + c["name"])
 
+# get json file for the debugger
 for x in myroot[9]:
     c = x.attrib
     split_tup = os.path.splitext(c["name"])
@@ -49,6 +59,7 @@ for x in myroot[9]:
     if c["name"] == "auto_instantiation" and c["value"] == "on":
          lst.append(directory + "/debug_profile.wizard.json")
 
+# after taking the files copy to created folder
 for x in lst:
     if os.path.basename(x) == x[len(directory):len(x)]:
         shutil.copy2(x, 'server_files/')
@@ -58,13 +69,20 @@ for x in lst:
 
 shutil.copy2(top_file_xml, 'server_files/')
 
+# copy xml files
 peri_xml_path = top_file_xml[:-3] + "peri.xml"
 if os.path.exists(peri_xml_path):
     shutil.copy2(peri_xml_path, 'server_files/')
 
+peri_xml_path = top_file_xml[:-3] + "peri.pre_import.xml"
+if os.path.exists(peri_xml_path):
+    shutil.copy2(peri_xml_path, 'server_files/')
+
+# if any ip is included copy that as well
 if os.path.exists(directory + "/ip"):
     shutil.copytree(directory + "/ip", "server_files/ip")
 
+# create zip from the folder
 zip_file_name = os.path.basename(top_file_xml[:-4])
 archived = shutil.make_archive(zip_file_name, 'zip', 'server_files/')
 
