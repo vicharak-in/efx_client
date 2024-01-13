@@ -1,7 +1,6 @@
 #!/usr/bin/env sh
 
 # HOME="/home/dj"
-EFINITY_HOME="${HOME}/hdd/shreeyash/efinity/2023.1"
 BASE_FOLDER="${HOME}/hdd/efinity_company_projects"
 
 cd $BASE_FOLDER || exit
@@ -23,6 +22,7 @@ fi
 rm ${ZIP_FILE}
 
 PROJECT_NAME="$2"
+EFINITY_HOME="${HOME}/hdd/shreeyash/efinity/2023.$3"
 PYTHON_PATH="${EFINITY_HOME}/bin"
 
 sed -i "s|location=\"[^\"]*\"|location=\"${CURRENT_PATH}\"|" ${PROJECT_NAME}.xml

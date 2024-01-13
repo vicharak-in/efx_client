@@ -2,13 +2,56 @@
 
 USERNAME="efx"
 
-if [ $# -ne 2 ]; then
-	echo "Usage: $0 <project_folder> <project_name>"
+usage() {
+	echo "Usage:"
+	echo "Example: $0 -d ~/xyz -n abc -e 2"
+	echo "	-d <project_folder> required"
+	echo "	-n <project_name>"
+	echo "		optional, if not given, project folder name is used"
+	echo "	-e <efinity_version>"
+	echo "	 	1: 2023.1 default"
+	echo "	 	2: 2023.2"
+	echo "		optional, if not given, 2023.1 is used"
+	echo "	-h <help>"
 	exit 1
+}
+
+while getopts "d:n:e:h" opt; do
+	case $opt in
+		d)
+			PROJECT_FOLDER=$(realpath $OPTARG)
+			;;
+		n)
+			PROJECT_NAME=$OPTARG
+			;;
+		e)
+			EFINITY_VERSION=$OPTARG
+			;;
+		h)
+			usage
+			;;
+		\?)
+			echo "Invalid option: -$OPTARG" >&2
+			usage
+			;;
+	esac
+done
+
+# check if project folder is given
+if [ -z "$PROJECT_FOLDER" ]; then
+	echo "Project folder not given"
+	usage
 fi
 
-PROJECT_FOLDER=$1
-PROJECT_NAME=$2
+# check if project name is given
+if [ -z "$PROJECT_NAME" ]; then
+	PROJECT_NAME=$(basename "$PROJECT_FOLDER")
+fi
+
+# check if efinity version is given
+if [ -z "$EFINITY_VERSION" ]; then
+	EFINITY_VERSION=1
+fi
 
 SERVER_IP="192.168.29.12"
 SERVER_PROJECT_FOLDER="/home/$USERNAME/hdd/efinity_company_projects"
@@ -31,7 +74,7 @@ fi
 
 rm "$ZIP_FILE"
 
-ssh $USERNAME@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME"
+ssh $USERNAME@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME $EFINITY_VERSION"
 
 scp $USERNAME@$SERVER_IP:"$SERVER_PROJECT_FOLDER/$PROJECT_NAME/outflow.zip" .
 

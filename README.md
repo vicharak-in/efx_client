@@ -19,12 +19,18 @@ sudo make install-client
 ## Usage
 
 ```
-$ efx_client <project_folder> <project_name>
+$ efx_client -d <folder_name> -n <project_name> -e <efinity_version>
 ```
 
 Example:
 ```
-$ efx_client ~/dev/verilog/and_gate and_gate
+$ efx_client -d ~/dev/verilog/and_gate -n and_gate -e 2
+$ efx_client -d ~/dev/verilog/and_gate
+```
+
+Help:
+```
+$ efx_client -h
 ```
 
 ## Inspecting output
