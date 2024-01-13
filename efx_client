@@ -1,5 +1,7 @@
 #!/bin/env bash
 
+USERNAME="efx"
+
 if [ $# -ne 2 ]; then
 	echo "Usage: $0 <project_folder> <project_name>"
 	exit 1
@@ -9,19 +11,19 @@ PROJECT_FOLDER=$1
 PROJECT_NAME=$2
 
 SERVER_IP="192.168.29.12"
-SERVER_PROJECT_FOLDER="/home/vicharak/hdd/efinity_company_projects"
+SERVER_PROJECT_FOLDER="/home/$USERNAME/hdd/efinity_company_projects"
 
 ssh-keygen -F $SERVER_IP > /dev/null
 ID_ALREADY_PRESENT=$?
 
 if [[ $ID_ALREADY_PRESENT -ne 0 ]]; then
-	ssh-copy-id vicharak@$SERVER_IP
+	ssh-copy-id $USERNAME@$SERVER_IP
 fi
 
 ZIP_FILE=$(efx_parse "$PROJECT_FOLDER/$PROJECT_NAME.xml")
 echo "$ZIP_FILE"
 
-scp $ZIP_FILE vicharak@$SERVER_IP:"$SERVER_PROJECT_FOLDER"
+scp $ZIP_FILE $USERNAME@$SERVER_IP:"$SERVER_PROJECT_FOLDER"
 if [ $? -ne 0 ]; then
 	echo "Error in copying file to server"
 	exit 1
@@ -29,12 +31,12 @@ fi
 
 rm "$ZIP_FILE"
 
-ssh vicharak@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME"
+ssh $USERNAME@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME"
 
-scp vicharak@$SERVER_IP:"$SERVER_PROJECT_FOLDER/$PROJECT_NAME/outflow.zip" .
+scp $USERNAME@$SERVER_IP:"$SERVER_PROJECT_FOLDER/$PROJECT_NAME/outflow.zip" .
 
 unzip -o outflow.zip -d "$PROJECT_FOLDER" 
 
-ssh vicharak@$SERVER_IP "rm -r $SERVER_PROJECT_FOLDER/$PROJECT_NAME"
+ssh $USERNAME@$SERVER_IP "rm -r $SERVER_PROJECT_FOLDER/$PROJECT_NAME"
 
 rm outflow.zip
