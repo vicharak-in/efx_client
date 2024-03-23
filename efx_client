@@ -53,7 +53,7 @@ if [ -z "$EFINITY_VERSION" ]; then
 	EFINITY_VERSION=1
 fi
 
-SERVER_IP="192.168.29.12"
+SERVER_IP="galactos.local"
 SERVER_PROJECT_FOLDER="/home/$USERNAME/hdd/efinity_company_projects"
 
 ssh-keygen -F $SERVER_IP > /dev/null
