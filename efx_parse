@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 import os
 import shutil
 import argparse
+import re
 from zipfile import ZipFile
 
 # take arguments from the command line
@@ -42,6 +43,17 @@ for x in myroot[1]:
 
     if split_tup[1]:
         lst.append(directory + "/" + c["name"])
+
+# get memory configuration files
+for x in lst:
+    f = open(x, "r")
+    source = f.read()
+    objects = re.findall("\$readmemh\(\".*\"", source)
+
+    for obj in objects:
+        index = obj.find("\"")
+        if index != -1:
+            lst.append(directory + "/" + obj[index+1:-1])
 
 # get sdc files from the xml
 for x in myroot[2]:
