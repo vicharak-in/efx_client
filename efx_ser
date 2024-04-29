@@ -1,12 +1,14 @@
-#!/usr/bin/env sh
-
+#!/bin/env sh
 # HOME="/home/dj"
 BASE_FOLDER="${HOME}/hdd/efinity_company_projects"
 
 cd $BASE_FOLDER || exit
 
 ZIP_FILE="$1"
-PROJECT_FOLDER=$(basename -s ".zip" ${ZIP_FILE})
+# PROJECT_FOLDER=$(basename -s ".zip" ${ZIP_FILE})
+PROJECT_FOLDER="$4"
+
+echo ${PROJECT_FOLDER}
 
 mkdir ${PROJECT_FOLDER}
 cd ${PROJECT_FOLDER}
