@@ -3,21 +3,23 @@
 USERNAME="efx"
 
 usage() {
-	echo "Usage:"
-	echo "Example: $0 -d ~/xyz -n abc -e 2"
-	echo "	-d <project_folder> required"
-	echo "	-n <project_name>"
-	echo "		optional, if not given, project folder name is used"
-	echo "	-e <efinity_version>"
-  echo "	 	2023.1 (default)"
-	echo "	 	2023.2"
-  echo "    2024.1"
-	echo "		optional, if not given, 2023.1 is used"
-	echo "	-h <help>"
+	echo -e "Usage:"
+	echo -e "Example: $0 -d ~/xyz -n abc -e 2"
+	echo -e " -d <project_folder> required"
+	echo -e " -n <project_name>"
+	echo -e "\toptional, if not given, project folder name is used"
+	echo -e " -e <efinity_version>"
+  echo -e "\t2023.1"
+  echo -e "\t2023.2 (default)"
+  echo -e "\t2024.1"
+	echo -e "\toptional, if not given, 2023.1 is used"
+  echo -e " -o <outflow dir>"
+  echo -e "\toptional, specify an alternative outflow directory"
+	echo -e " -h <help>"
 	exit 1
 }
 
-while getopts "d:n:e:h" opt; do
+while getopts "d:n:e:ho:" opt; do
 	case $opt in
 		d)
 			PROJECT_FOLDER=$(realpath $OPTARG)
@@ -31,6 +33,9 @@ while getopts "d:n:e:h" opt; do
 		h)
 			usage
 			;;
+    o)
+      OUTFLOW_OUT_DIR="$OPTARG"
+      ;;
 		\?)
 			echo "Invalid option: -$OPTARG" >&2
 			usage
@@ -51,7 +56,13 @@ fi
 
 # check if efinity version is given
 if [ -z "$EFINITY_VERSION" ]; then
-	EFINITY_VERSION=2023.1
+	EFINITY_VERSION=2023.2
+fi
+
+if [ -z "$OUTFLOW_OUT_DIR" ]; then
+  OUTFLOW_OUT_DIR="$PROJECT_FOLDER"
+else
+  OUTFLOW_OUT_DIR="$PROJECT_FOLDER"/"$OUTFLOW_OUT_DIR"
 fi
 
 SERVER_IP="galactos.local"
@@ -78,11 +89,14 @@ rm "$ZIP_FILE"
 ID=$(echo $RANDOM | md5sum | head -c 10)
 echo $ID
 
+echo "Dumping outflow in $OUTFLOW_OUT_DIR"
+echo "Selected Efinity version $EFINITY_VERSION"
+
 ssh $USERNAME@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME $EFINITY_VERSION $ID"
 
 scp $USERNAME@$SERVER_IP:"$SERVER_PROJECT_FOLDER/$ID/outflow.zip" .
 
-unzip -o outflow.zip -d "$PROJECT_FOLDER" 
+unzip -o outflow.zip -d "$OUTFLOW_OUT_DIR"
 
 ssh $USERNAME@$SERVER_IP "rm -r $SERVER_PROJECT_FOLDER/$ID"
 
