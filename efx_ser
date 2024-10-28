@@ -1,5 +1,7 @@
 #!/bin/env sh
 # HOME="/home/dj"
+set -eu
+
 BASE_FOLDER="${HOME}/hdd/efinity_company_projects"
 
 cd $BASE_FOLDER || exit
@@ -9,6 +11,9 @@ PROJECT_NAME="$2"
 EFINITY_VERSION="$3"
 PROJECT_FOLDER="$4"
 
+echo "$0 got Project name $PROJECT_NAME"
+echo "$0 got Efinity Version $EFINITY_VERSION"
+echo "$0 Writing into project $PROJECT_FOLDER"
 
 echo ${PROJECT_FOLDER}
 
@@ -35,8 +40,8 @@ export PATH=${PYTHON_PATH}:$(echo $PATH)
 export EFXPT_HOME="${EFINITY_HOME}/pt"
 export EFXPGM_HOME="${EFINITY_HOME}/pgm"
 
-echo "Running Synthesis"
-${EFINITY_HOME}/scripts/efx_run.py ${PROJECT_NAME}.xml
+echo "$0 Running Synthesis"
+${EFINITY_HOME}/scripts/efx_run2.py ${PROJECT_NAME}.xml
 
 zip -r -9 outflow.zip outflow
 
