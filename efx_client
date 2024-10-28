@@ -9,8 +9,9 @@ usage() {
 	echo "	-n <project_name>"
 	echo "		optional, if not given, project folder name is used"
 	echo "	-e <efinity_version>"
-	echo "	 	1: 2023.1 default"
-	echo "	 	2: 2023.2"
+  echo "	 	2023.1 (default)"
+	echo "	 	2023.2"
+  echo "    2024.1"
 	echo "		optional, if not given, 2023.1 is used"
 	echo "	-h <help>"
 	exit 1
@@ -50,7 +51,7 @@ fi
 
 # check if efinity version is given
 if [ -z "$EFINITY_VERSION" ]; then
-	EFINITY_VERSION=1
+	EFINITY_VERSION=2023.1
 fi
 
 SERVER_IP="galactos.local"
