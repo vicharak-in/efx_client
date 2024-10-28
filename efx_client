@@ -76,7 +76,7 @@ if [[ $ID_ALREADY_PRESENT -ne 0 ]]; then
 fi
 
 ZIP_FILE=$(efx_parse "$PROJECT_FOLDER/$PROJECT_NAME.xml")
-echo "$ZIP_FILE"
+echo "$0 zip file $ZIP_FILE"
 
 scp $ZIP_FILE $USERNAME@$SERVER_IP:"$SERVER_PROJECT_FOLDER"
 if [ $? -ne 0 ]; then
@@ -87,10 +87,10 @@ fi
 rm "$ZIP_FILE"
 
 ID=$(echo $RANDOM | md5sum | head -c 10)
-echo $ID
+echo "$0 ID assigned $ID"
 
-echo "Dumping outflow in $OUTFLOW_OUT_DIR"
-echo "Selected Efinity version $EFINITY_VERSION"
+echo "$0 Dumping outflow in $OUTFLOW_OUT_DIR"
+echo "$0 Selected Efinity version $EFINITY_VERSION"
 
 ssh $USERNAME@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME $EFINITY_VERSION $ID"
 
