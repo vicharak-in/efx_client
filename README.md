@@ -33,6 +33,17 @@ Help:
 $ efx_client -h
 ```
 
+Carry out multiple jobs at the same time:
+
+```
+$ efx_client -d . -n proj_name -e 2023.2 -o job1 &>/dev/null </dev/null &
+$ efx_client -d . -n proj_name -e 2023.2 -o job2 &>/dev/null </dev/null &
+$ efx_client -d . -n proj_name -e 2023.2 -o job3 &>/dev/null </dev/null &
+```
+You may give relevant names to the jobs. After the processes have finished,
+the results (log messages, bitstreams etc.) can be found in job1, job2, job3
+directories.
+
 ## Inspecting output
 
 After synthesis is complete, the console output can be found in the outflow
