@@ -94,10 +94,29 @@ echo "$0 Selected Efinity version $EFINITY_VERSION"
 
 ssh $USERNAME@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME $EFINITY_VERSION $ID"
 
+if (( $? != 0 )); then
+  echo "$0 Failed running efx_ser; Exit Status is $?"
+  exit 1
+fi
+
 scp $USERNAME@$SERVER_IP:"$SERVER_PROJECT_FOLDER/$ID/outflow.zip" .
+
+if (( $? != 0 )); then
+  echo "$0 Failed copying outflow.zip from server to local machine; Exit Status is $?"
+  echo "Try running these commands to copy it manually:"
+  echo "scp $USERNAME@$SERVER_IP:"$SERVER_PROJECT_FOLDER/$ID/outflow.zip" ."
+  echo "unzip -o outflow.zip -d "$OUTFLOW_OUT_DIR""
+  echo "ssh $USERNAME@$SERVER_IP "rm -r $SERVER_PROJECT_FOLDER/$ID""
+  exit 1
+fi
 
 unzip -o outflow.zip -d "$OUTFLOW_OUT_DIR"
 
 ssh $USERNAME@$SERVER_IP "rm -r $SERVER_PROJECT_FOLDER/$ID"
+
+if (( $? != 0 )); then
+  echo "$0 Failed to remove outflow.zip from remote machine; Exit Status is $?"
+  exit 1
+fi
 
 rm outflow.zip
