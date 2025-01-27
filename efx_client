@@ -12,6 +12,7 @@ usage() {
 	echo -e "\t2023.1"
 	echo -e "\t2023.2 (default)"
 	echo -e "\t2024.1"
+  echo -e "\t2024.2"
 	echo -e "\toptional, if not given, 2023.2 is used"
 	echo -e " -o <outflow dir>"
 	echo -e "\toptional, specify an alternative outflow directory"
