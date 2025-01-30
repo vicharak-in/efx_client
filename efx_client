@@ -17,6 +17,15 @@ usage() {
 	echo -e " -o <outflow dir>"
 	echo -e "\toptional, specify an alternative outflow directory"
 	echo -e " -h <help>"
+  echo
+  echo -e "Troubleshooting:\n"
+  echo -e "In case connection snaps off in b/w synthesis runs, wait a little"
+  echo -e "while to let the synthesis process finish and run this command to retrieve"
+  echo -e "the outflow folder. (replace \$ID with ID from .efx_client_history)"
+  echo
+  echo -e "scp efx@galactos.local:/home/efx/hdd/efinity_company_projects/\$ID/outflow.zip ."
+  echo -e "unzip outflow.zip"
+
 	exit 1
 }
 
@@ -92,6 +101,8 @@ echo "$0 ID assigned $ID"
 
 echo "$0 Dumping outflow in $OUTFLOW_OUT_DIR"
 echo "$0 Selected Efinity version $EFINITY_VERSION"
+
+echo "$(date) $ID $OUTFLOW_OUT_DIR" >> "$PROJECT_FOLDER"/.efx_client_history
 
 ssh $USERNAME@$SERVER_IP "efx_ser $SERVER_PROJECT_FOLDER/$ZIP_FILE $PROJECT_NAME $EFINITY_VERSION $ID"
 
