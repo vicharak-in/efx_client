@@ -1,4 +1,4 @@
-#!/bin/env sh
+#!/bin/env bash
 # HOME="/home/dj"
 set -eu
 
@@ -43,7 +43,12 @@ export EFXPGM_HOME="${EFINITY_HOME}/pgm"
 echo "$0 Running Synthesis"
 ${EFINITY_HOME}/scripts/efx_run2.py ${PROJECT_NAME}.xml
 
-zip -r -9 outflow.zip outflow
+prep_files=("outflow")
+debug_info_file_name="debug_profile.wizard.json"
+if [ -f "$debug_info_file_name" ]; then
+  prep_files+=("$debug_info_file_name")
+fi
+zip -r -9 outflow.zip "${prep_files[@]}"
 
 # Print a brief summary before sending the files
 
